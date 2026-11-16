@@ -24,3 +24,7 @@
       assert:
         that:
           - "'LogFile = kernel' in (logwatch_iptables_conf.content | b64decode)"
+
+    - name: Run logwatch with the installed config
+      command: logwatch --range today --output stdout
+      changed_when: false
