@@ -1,0 +1,26 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Read the local logwatch config
+      slurp:
+        src: /etc/logwatch/conf/logwatch.conf
+      register: logwatch_conf
+
+    - name: Config is in /etc, where package upgrades leave it alone
+      assert:
+        that:
+          - "'Detail = Med' in (logwatch_conf.content | b64decode)"
+          - "'MailTo = root' in (logwatch_conf.content | b64decode)"
+
+    - name: Read the iptables service override
+      slurp:
+        src: /etc/logwatch/conf/services/iptables.conf
+      register: logwatch_iptables_conf
+
+    - name: The iptables service reads the kernel log group only
+      assert:
+        that:
+          - "'LogFile = kernel' in (logwatch_iptables_conf.content | b64decode)"

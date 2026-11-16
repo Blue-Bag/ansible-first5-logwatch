@@ -11,6 +11,14 @@ Role Variables
 --------------------
 These are commented in the defaults file.
 
+The config is written to `/etc/logwatch/conf/logwatch.conf`. Do not move it back to
+`/usr/share/logwatch/default.conf/`: that file belongs to the package and is replaced on every
+logwatch upgrade.
+
+The role also writes `/etc/logwatch/conf/services/iptables.conf` so the "iptables firewall" section
+reads `kern.log`. The stock service reads `/var/log/messages`, which Debian 12 and later no longer
+write.
+
 Usage
 ---------
 

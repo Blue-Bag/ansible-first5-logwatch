@@ -7,5 +7,14 @@
 - name: Install Logwatch config
   template:
     src: logwatch.conf.j2
-    dest: /usr/share/logwatch/default.conf/logwatch.conf
+    dest: /etc/logwatch/conf/logwatch.conf
+  become: true
+
+- name: Point the iptables service at kern.log
+  copy:
+    src: iptables.conf
+    dest: /etc/logwatch/conf/services/iptables.conf
+    owner: root
+    group: root
+    mode: "0644"
   become: true
